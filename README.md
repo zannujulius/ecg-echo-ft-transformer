@@ -43,23 +43,23 @@
 
 ### Results — Test Set
 
-| Metric | model_v1 | model_v2 | model_v3 | model_v4 | model_v5 |
-|---|---|---|---|---|---|
-| Accuracy | 0.5780 | **0.6844** | 0.6758 | 0.6693 | 0.6812 |
-| Macro F1 | 0.2837 | 0.3044 | 0.3186 | 0.3188 | **0.3283** |
-| Weighted F1 | 0.6867 | **0.7590** | 0.7553 | 0.7517 | 0.7588 |
-| Macro AUROC | 0.7364 | 0.7774 | 0.7757 | **0.7830** | 0.7635 |
-| Macro AUPRC | 0.3115 | 0.3327 | 0.3248 | **0.3353** | 0.3346 |
+| Metric | model_v1 | model_v2 | model_v3 | model_v4 | model_v5 | model_v6 |
+|---|---|---|---|---|---|---|
+| Accuracy | 0.5780 | **0.6844** | 0.6758 | 0.6693 | 0.6812 | 0.6202 |
+| Macro F1 | 0.2837 | 0.3044 | 0.3186 | 0.3188 | **0.3283** | 0.3132 |
+| Weighted F1 | 0.6867 | **0.7590** | 0.7553 | 0.7517 | 0.7588 | 0.7177 |
+| Macro AUROC | 0.7364 | 0.7774 | 0.7757 | **0.7830** | 0.7635 | 0.7594 |
+| Macro AUPRC | 0.3115 | 0.3327 | 0.3248 | **0.3353** | 0.3346 | 0.3307 |
 
 ### Results — Validation Set
 
-| Metric | model_v1 | model_v2 | model_v3 | model_v4 | model_v5 |
-|---|---|---|---|---|---|
-| Accuracy | 0.5764 | **0.6737** | 0.6654 | 0.6579 | 0.6676 |
-| Macro F1 | 0.2986 | 0.2994 | 0.3121 | 0.3107 | **0.3213** |
-| Weighted F1 | 0.6811 | **0.7483** | 0.7447 | 0.7408 | 0.7472 |
-| Macro AUROC | 0.7362 | 0.7611 | 0.7674 | **0.7686** | 0.7532 |
-| Macro AUPRC | 0.3255 | 0.3371 | 0.3306 | 0.3349 | **0.3371** |
+| Metric | model_v1 | model_v2 | model_v3 | model_v4 | model_v5 | model_v6 |
+|---|---|---|---|---|---|---|
+| Accuracy | 0.5764 | **0.6737** | 0.6654 | 0.6579 | 0.6676 | 0.6194 |
+| Macro F1 | 0.2986 | 0.2994 | 0.3121 | 0.3107 | **0.3213** | 0.3085 |
+| Weighted F1 | 0.6811 | **0.7483** | 0.7447 | 0.7408 | 0.7472 | 0.7139 |
+| Macro AUROC | 0.7362 | 0.7611 | 0.7674 | **0.7686** | 0.7532 | 0.7414 |
+| Macro AUPRC | 0.3255 | 0.3371 | 0.3306 | 0.3349 | **0.3371** | 0.3275 |
 
 ---
 
@@ -81,15 +81,16 @@ Reducing normal to 2,000 gives a near-balanced training set (29/29/23/19%) using
 
 ## Configuration Summary
 
-| Parameter | v1 | v2 | v3 | v4 | v5 |
-|---|---|---|---|---|---|
-| Normal cap | 3,000 | 3,000 | 3,000 | **2,000** | 2,000 |
-| SMOTE | ✗ | ✗ | ✓ (all→3k) | ✗ | ✗ |
-| Training samples | 7,893 | 7,893 | 12,000 | 6,893 | 6,893 |
-| Shuffle | ✗ | ✓ | ✓ | ✓ | ✓ |
-| Dropout | 0.1 | 0.3 | 0.3 | 0.3 | 0.3 |
-| Loss | CE | CE | CE | CE | **Focal (γ=2)** |
-| Best epoch | 100 | 7 | 4 | 4 | 4 |
+| Parameter | v1 | v2 | v3 | v4 | v5 | v6 |
+|---|---|---|---|---|---|---|
+| Normal cap | 3,000 | 3,000 | 3,000 | **2,000** | 2,000 | 2,000 |
+| SMOTE | ✗ | ✗ | ✓ (all→3k) | ✗ | ✗ | ✗ |
+| Training samples | 7,893 | 7,893 | 12,000 | 6,893 | 6,893 | 6,893 |
+| Shuffle | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Dropout | 0.1 | 0.3 | 0.3 | 0.3 | 0.3 | **0.2** |
+| LR | 1e-3 | 1e-3 | 1e-3 | 1e-3 | 1e-3 | **1e-4** |
+| Loss | CE | CE | CE | CE | **Focal (γ=2)** | Focal (γ=2) |
+| Best epoch | 100 | 7 | 4 | 4 | 4 | 14 |
 
 ---
 
@@ -102,4 +103,5 @@ Reducing normal to 2,000 gives a near-balanced training set (29/29/23/19%) using
 | model_v3 | SMOTENC on minority classes | ✅ Done |
 | model_v4 | Normal cap 2,000 — all real data | ✅ Done |
 | model_v5 | Focal loss (γ=2) on v4 setup | ✅ Done |
-| model_v6 | Hyperparameter search (Optuna) on v5 setup | 🔲 Planned |
+| model_v6 | Lower LR (1e-4) + lower dropout (0.2) | ✅ Done — worse than v5 |
+| model_v7 | Hyperparameter search (Optuna) on v5 setup | 🔲 Planned |
